@@ -9,7 +9,6 @@ class Survey(models.Model):
     expires_at = models.DateTimeField()
 
 
-
 class Question(models.Model):
     ANSWER_TYPES = (
         ('text', 'text input'),
@@ -21,4 +20,24 @@ class Question(models.Model):
     survey = models.ForeignKey(Survey, on_delete=models.CASCADE, null=True)
     choices = models.TextField(blank=True, null=True)
 
+    def get_clean_choices(self):
+        """ Return split and stripped list of choices with no null values. """
+        if self.choices is None:
+            return []
+        choices_list = []
+        for choice in self.choices.split(','):
+            choice = choice.strip()
+            if choice:
+                choices_list.append(choice)
+        return choices_list
+
     
+class Response(models.Model):
+    session_id = models.CharField(max_length=50)
+    created = models.DateTimeField(auto_now_add=True)
+    survey = models.ForeignKey(Survey, on_delete=models.CASCADE)
+
+class Answer(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    response = models.ForeignKey(Response, on_delete=models.CASCADE)
+    body = models.TextField()

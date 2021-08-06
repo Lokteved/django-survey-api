@@ -1,10 +1,19 @@
 from django.contrib import admin
+from django.db import models
 
-from .models import Survey, Question
+from .models import Answer, Response, Survey, Question
 
 
 class SurveyQuestionInline(admin.StackedInline):
     model = Question
+
+
+class ResponseAnswerInline(admin.StackedInline):
+    model = Answer
+
+
+class ResponseAdmin(admin.ModelAdmin):
+    inlines = (ResponseAnswerInline, )
 
 
 class SurveyAdmin(admin.ModelAdmin):
@@ -13,3 +22,4 @@ class SurveyAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Survey, SurveyAdmin)
+admin.site.register(Response, ResponseAdmin)
