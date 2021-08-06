@@ -1,10 +1,6 @@
 from django.contrib import admin
 
-from .models import Survey, Question, Choice
-
-
-class QuestionChoiceInline(admin.StackedInline):
-    model = Choice
+from .models import Survey, Question
 
 
 class SurveyQuestionInline(admin.StackedInline):
@@ -16,10 +12,4 @@ class SurveyAdmin(admin.ModelAdmin):
     inlines = (SurveyQuestionInline, )
 
 
-class QuestionAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'text')
-    inlines = (QuestionChoiceInline, )
-
-
-admin.site.register(Question, QuestionAdmin)
 admin.site.register(Survey, SurveyAdmin)
