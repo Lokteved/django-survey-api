@@ -17,7 +17,7 @@ class Question(models.Model):
     )
     type = models.CharField(max_length=200, choices=ANSWER_TYPES, default='text')
     text = models.TextField()
-    survey = models.ForeignKey(Survey, on_delete=models.CASCADE, null=True)
+    survey = models.ForeignKey(Survey, on_delete=models.CASCADE, null=True, related_name='questions')
     choices = models.TextField(blank=True, null=True)
 
     def get_clean_choices(self):
@@ -30,6 +30,9 @@ class Question(models.Model):
             if choice:
                 choices_list.append(choice)
         return choices_list
+    
+    def __str__(self):
+        return self.text
 
     
 class Response(models.Model):
