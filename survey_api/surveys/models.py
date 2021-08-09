@@ -4,13 +4,16 @@ from django.db.models import Max
 
 
 class Respondent(models.Model):
-    slug = models.SlugField(max_length=10, unique=True, blank=True)
+    auto_id = models.CharField(max_length=10, unique=True, blank=True)
 
     def save(self, **kwargs):
-        if not self.slug:
+        if not self.auto_id:
             max = Respondent.objects.aggregate(id_max=Max('id'))['id_max']
-            self.slug = "{}{:05d}".format('id', max if max is not None else 1)
+            self.auto_id = "{}{:05d}".format('id', max + 1 if max is not None else 1)
         super().save(*kwargs)
+    
+    def __str__(self) -> str:
+        return self.auto_id
 
 
 
@@ -19,6 +22,9 @@ class Survey(models.Model):
     description = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
     expires_at = models.DateTimeField()
+
+    def __str__(self) -> str:
+        return self.title
 
 
 class Question(models.Model):
@@ -37,11 +43,14 @@ class Question(models.Model):
 
     
 class Response(models.Model):
-    user_id = models.CharField(max_length=50)
+    respondent = models.ForeignKey(Respondent, on_delete=models.CASCADE, related_name='responses')
     created = models.DateTimeField(auto_now_add=True)
     survey = models.ForeignKey(Survey, on_delete=models.CASCADE)
 
 class Answer(models.Model):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    response = models.ForeignKey(Response, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='answers')
+    response = models.ForeignKey(Response, on_delete=models.CASCADE, related_name='answers')
     body = models.TextField()
+
+    def __str__(self) -> str:
+        return self.body
