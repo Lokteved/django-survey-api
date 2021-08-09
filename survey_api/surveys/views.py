@@ -5,11 +5,10 @@ from rest_framework.views import APIView
 from rest_framework import viewsets
 from .models import Survey
 from .serializers import SurveySerializer
+from datetime import datetime, timezone
 
-def index(request):
-    return HttpResponse('hello!')
 
 class SurveyViewSet(viewsets.ModelViewSet):
-    queryset = Survey.objects.all()
+    queryset = Survey.objects.filter(expires_at__gt=datetime.now(timezone.utc))
     serializer_class = SurveySerializer
 
