@@ -18,6 +18,7 @@ def view_responses(request, user_id):
     serializer = SurveyResponseSerializer(queryset, many=True)
     return Response(serializer.data)
 
+
 api_view(['POST'])
 def respond(request, survey_id):
     serializer = SurveyResponseSerializer(data=request.data)
