@@ -1,15 +1,14 @@
 # django-survey-api
-API for creating and completing surveys
-API для создания и прохождения опросов
+### API для создания и прохождения опросов
 
-Установка:
+## Установка:
     - клонировать репозиторий
     - pip install -r requiements.txt
     - python survey_api/manage.py migrate
     - python survey_api/manage.py createsuperuser
     - python survey_api/manage.py runserver
 
-Эндпоинты:
+## Эндпоинты:
     - 'surveys'
         Список все доступных опросов
     - 'surveys/<id>'
