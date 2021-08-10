@@ -8,5 +8,5 @@ router.register('surveys', SurveyViewSet)
 urlpatterns = [
     path('', include(router.urls)),
     path('responses/<str:user_id>', view_responses),
-    path('surveys,<int:survey_id>/respond', respond)
+    path('surveys/<int:survey_id>/respond', respond)
 ]
