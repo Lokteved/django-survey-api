@@ -2,7 +2,7 @@ from django.db import models
 from django.db.models import fields
 from rest_framework import serializers
 
-from .models import Answer, Survey, Response, Question
+from .models import Answer, Survey, SurveyResponse, Question
 
 
 class QuestionSerializer(serializers.ModelSerializer):
@@ -31,11 +31,11 @@ class SurveySerializer(serializers.ModelSerializer):
         model = Survey
         fields = ('id', 'title', 'description', 'created', 'expires_at', 'questions')
 
-class ResponseSerializar(serializers.ModelSerializer):
+class SurveyResponseSerializar(serializers.ModelSerializer):
     respondent = serializers.StringRelatedField()
     survey = serializers.StringRelatedField()
     answers = AnswerSerializer(many=True)
 
     class Meta:
-        model = Response
+        model = SurveyResponse
         fields = ('respondent', 'created', 'survey', 'answers')

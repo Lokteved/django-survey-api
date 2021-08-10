@@ -1,6 +1,6 @@
 from rest_framework import viewsets
-from .models import Survey, Response
-from .serializers import SurveySerializer, ResponseSerializar
+from .models import Survey, SurveyResponse
+from .serializers import SurveySerializer, SurveyResponseSerializar
 from datetime import datetime, timezone
 
 
@@ -9,9 +9,9 @@ class SurveyViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = SurveySerializer
 
 
-class ResponseViewSet(viewsets.ModelViewSet):
-    queryset = Response.objects.all()
-    serializer_class = ResponseSerializar
+class SurveyResponseViewSet(viewsets.ModelViewSet):
+    queryset = SurveyResponse.objects.all()
+    serializer_class = SurveyResponseSerializar
 
     # def get_queryset(self):
     #     queryset = Response.objects.filter(user_id=self.kwargs.get('user_id'))

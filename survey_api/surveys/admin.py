@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.db import models
 
-from .models import Answer, Respondent, Response, Survey, Question
+from .models import Answer, Respondent, SurveyResponse, Survey, Question
 
 
 class SurveyQuestionInline(admin.StackedInline):
@@ -12,7 +12,7 @@ class ResponseAnswerInline(admin.StackedInline):
     model = Answer
 
 
-class ResponseAdmin(admin.ModelAdmin):
+class SurveyResponseAdmin(admin.ModelAdmin):
     inlines = (ResponseAnswerInline, )
 
 
@@ -22,5 +22,5 @@ class SurveyAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Survey, SurveyAdmin)
-admin.site.register(Response, ResponseAdmin)
+admin.site.register(SurveyResponse, SurveyResponseAdmin)
 admin.site.register(Respondent)

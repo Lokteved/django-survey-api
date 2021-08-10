@@ -42,14 +42,14 @@ class Question(models.Model):
         return self.text
 
     
-class Response(models.Model):
+class SurveyResponse(models.Model):
     respondent = models.ForeignKey(Respondent, on_delete=models.CASCADE, related_name='responses')
     created = models.DateTimeField(auto_now_add=True)
     survey = models.ForeignKey(Survey, on_delete=models.CASCADE)
 
 class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='answers')
-    response = models.ForeignKey(Response, on_delete=models.CASCADE, related_name='answers')
+    response = models.ForeignKey(SurveyResponse, on_delete=models.CASCADE, related_name='answers')
     body = models.TextField()
 
     def __str__(self) -> str:
