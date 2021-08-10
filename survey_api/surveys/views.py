@@ -1,6 +1,9 @@
+import status
 from rest_framework import viewsets
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 from .models import Survey, SurveyResponse
-from .serializers import SurveySerializer, SurveyResponseSerializar
+from .serializers import SurveySerializer, SurveyResponseSerializer
 from datetime import datetime, timezone
 
 
@@ -9,10 +12,16 @@ class SurveyViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = SurveySerializer
 
 
-class SurveyResponseViewSet(viewsets.ModelViewSet):
-    queryset = SurveyResponse.objects.all()
-    serializer_class = SurveyResponseSerializar
+@api_view(['GET'])
+def view_responses(request, user_id):
+    queryset = SurveyResponse.objects.filter(respondent__auto_id=user_id)
+    serializer = SurveyResponseSerializer(queryset, many=True)
+    return Response(serializer.data)
 
-    # def get_queryset(self):
-    #     queryset = Response.objects.filter(user_id=self.kwargs.get('user_id'))
-
+api_view(['POST'])
+def respond(request, survey_id):
+    serializer = SurveyResponseSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
